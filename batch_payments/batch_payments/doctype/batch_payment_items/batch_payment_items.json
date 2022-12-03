@@ -1,0 +1,37 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-12-03 15:23:24.108072",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "purchase_invoice",
+  "outstanding"
+ ],
+ "fields": [
+  {
+   "fieldname": "purchase_invoice",
+   "fieldtype": "Link",
+   "label": "Purchase Invoice",
+   "options": "Purchase Invoice"
+  },
+  {
+   "fetch_from": "purchase_invoice.outstanding_amount",
+   "fieldname": "outstanding",
+   "fieldtype": "Read Only",
+   "label": "Outstanding"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-12-03 15:24:29.476208",
+ "modified_by": "Administrator",
+ "module": "Batch Payments",
+ "name": "Batch Payment Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
