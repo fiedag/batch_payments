@@ -1,0 +1,39 @@
+
+generate a key into /home/ubuntu/.ssh/ folder creating a file
+
+id_rsa
+id_rsa.pub which is the public key
+
+
+be sure to retain the passphrase for later
+
+Go the the github site and User->Settings->SSH and GPG Keys to install the SSH public key
+
+
+Next download and install gh via
+
+ ubuntu@vps-f5da0f99:~/.ssh$ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && sudo apt update && sudo apt install gh -y
+
+
+ all so you can run 
+
+ gh auth login
+
+This will allow you to cache the credentials
+
+You then need to go to github and enter the one-time code.
+
+
+Next you need to go to Settings->Developer Settings->Personal Access Tokens and then create an authorisation token for the GitHub CLI on that machine, with admin:public_key, gist, read:org and entire repo scope.
+
+Be sure to copy this token to the buffer as you will soon need it.
+
+When creating the gh auth login you will be prompted to paste it in.  Paste it in.
+
+Now add a remote repo
+
+git remote add origin git+ssh://git@github.com/fiedag/<repo>
+e.g. git remote add origin git+ssh://git@github.com/fiedag/batch_payments
+
+This should ask for the passphrase only once.
+
