@@ -1,0 +1,66 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-12-03 14:52:01.433190",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "bank_account",
+  "amended_from",
+  "file_format",
+  "batch_payment_items"
+ ],
+ "fields": [
+  {
+   "fieldname": "bank_account",
+   "fieldtype": "Link",
+   "label": "Bank Account",
+   "options": "Bank Account"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Batch Payments",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fetch_from": "bank_account.file_format",
+   "fieldname": "file_format",
+   "fieldtype": "Read Only",
+   "label": "File Format"
+  },
+  {
+   "fieldname": "batch_payment_items",
+   "fieldtype": "Table",
+   "label": "Batch Payment Items",
+   "options": "Batch Payment Items"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-12-03 15:25:07.774433",
+ "modified_by": "Administrator",
+ "module": "Batch Payments",
+ "name": "Batch Payments",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
