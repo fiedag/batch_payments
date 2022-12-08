@@ -1,15 +1,16 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-12-03 14:52:01.433190",
+ "creation": "2022-12-08 16:39:16.941387",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "bank_account",
+  "currency",
   "amended_from",
   "file_format",
-  "batch_payment_items"
+  "items"
  ],
  "fields": [
   {
@@ -34,15 +35,21 @@
    "label": "File Format"
   },
   {
-   "fieldname": "batch_payment_items",
+   "fieldname": "items",
    "fieldtype": "Table",
    "label": "Batch Payment Items",
    "options": "Batch Payment Items"
+  },
+  {
+   "fetch_from": "bank_account.currency",
+   "fieldname": "currency",
+   "fieldtype": "Read Only",
+   "label": "Currency"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-03 15:25:07.774433",
+ "modified": "2022-12-08 21:24:54.406620",
  "modified_by": "Administrator",
  "module": "Batch Payments",
  "name": "Batch Payments",
@@ -62,5 +69,6 @@
   }
  ],
  "sort_field": "modified",
- "sort_order": "DESC"
+ "sort_order": "DESC",
+ "states": []
 }
