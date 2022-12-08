@@ -3,37 +3,26 @@
 
 frappe.ui.form.on('Batch Payments', {
 	refresh: function(frm) {
-		frm.add_custom_button(__("Get Bills"), function() {
-			get_bills(frm);
-		});
-		frm.add_custom_button(__("Get Bills2"), function() {
-                        get_bills2(frm);
-                });
+		frm.add_custom_button(__('Purchase Invoice'), function() {
+				erpnext.utils.map_current_doc({
+					method: "batch_payments.batch_payments.doctype.batch_payments.batch_payments.get_items",
+					source_doctype: "Purchase Invoice",
+					target: frm,
+					date_field: "posting_date",
+					setters: {
+						supplier: frm.doc.supplier || undefined,
 
+					},
+					get_query_filters: {
+						docstatus: 1,
+						is_paid: 0,
+						currency: ["=", frm.doc.currency],
+						status: ["!=", "Paid"]
+					}
+				})
+			}, __("Get Items From"));
+
+		
 	}
 });
 
-
-function get_bills(frm) {
-
-	//alert("get bills, save first then iterate through the Batch Payment Items" + frm);
-	frappe.call({
-		method: 'get_bills',
-		doc: frm.doc,
-		callback: function (r) {
-			console.log('get_bills call back ' + r);
-		}
-	})
-}
-
-function get_bills2(frm) {
-
-        //alert("get bills, save first then iterate through the Batch Payment Items" + frm);
-        frappe.call({
-                method: 'get_bills2',
-                doc: frm.doc,
-                callback: function (r) {
-			console.log('get_bills2 callnback' + r);
-		}
-        })
-}
