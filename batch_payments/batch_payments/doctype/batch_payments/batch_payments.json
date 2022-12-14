@@ -10,14 +10,20 @@
   "currency",
   "amended_from",
   "file_format",
-  "items"
+  "items",
+  "company",
+  "date",
+  "posting_date",
+  "references"
  ],
  "fields": [
   {
    "fieldname": "bank_account",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Bank Account",
-   "options": "Bank Account"
+   "options": "Bank Account",
+   "reqd": 1
   },
   {
    "fieldname": "amended_from",
@@ -32,7 +38,9 @@
    "fetch_from": "bank_account.file_format",
    "fieldname": "file_format",
    "fieldtype": "Read Only",
-   "label": "File Format"
+   "in_list_view": 1,
+   "label": "File Format",
+   "reqd": 1
   },
   {
    "fieldname": "items",
@@ -44,12 +52,39 @@
    "fetch_from": "bank_account.currency",
    "fieldname": "currency",
    "fieldtype": "Read Only",
-   "label": "Currency"
+   "in_list_view": 1,
+   "label": "Currency",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "bank_account.company",
+   "fieldname": "company",
+   "fieldtype": "Read Only",
+   "label": "Company"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "references",
+   "fieldtype": "Table",
+   "label": "Payments",
+   "options": "Batch Payment References"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-08 21:24:54.406620",
+ "modified": "2022-12-14 16:08:40.765622",
  "modified_by": "Administrator",
  "module": "Batch Payments",
  "name": "Batch Payments",

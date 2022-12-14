@@ -8,7 +8,7 @@ frappe.ui.form.on('Batch Payments', {
 					method: "batch_payments.batch_payments.doctype.batch_payments.batch_payments.get_items",
 					source_doctype: "Purchase Invoice",
 					target: frm,
-					date_field: "posting_date",
+					date_field: "supplier",
 					setters: {
 						supplier: frm.doc.supplier || undefined,
 
@@ -21,6 +21,16 @@ frappe.ui.form.on('Batch Payments', {
 					}
 				})
 			}, __("Get Items From"));
+
+		frm.add_custom_button(__('Create Payments'), function() {
+				frm.call({
+					doc: frm.doc,
+					method: "create_payments",
+					callback: function(r) {
+						// here we want to populate the payment references child table
+					}
+				})
+			});
 
 		
 	}
