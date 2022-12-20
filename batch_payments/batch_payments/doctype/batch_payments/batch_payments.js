@@ -3,6 +3,7 @@
 
 frappe.ui.form.on('Batch Payments', {
 	refresh: function(frm) {
+
 		frm.add_custom_button(__('Purchase Invoice'), function() {
 				erpnext.utils.map_current_doc({
 					method: "batch_payments.batch_payments.doctype.batch_payments.batch_payments.get_items",
@@ -32,6 +33,19 @@ frappe.ui.form.on('Batch Payments', {
 				})
 			});
 
+		frm.add_custom_button(__('Generate File'), function() {
+				frm.call({
+					doc: frm.doc,
+					method: "generate_file",
+					callback: function(r) {
+
+						var file_html = frm.get_field('bank_payment_file')
+						file_html.set_value(r.message)
+						console.log('bank payment file = ' + r)
+
+					}
+				})
+			});
 		
 	}
 });

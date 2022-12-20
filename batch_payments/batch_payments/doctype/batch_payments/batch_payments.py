@@ -2,23 +2,27 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
+
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from itertools import groupby
 from erpnext.accounts.doctype.bank_account.bank_account import get_bank_account_details
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_reference_details
 
+from frappe.core.doctype.data_import.data_import import DataImport
+from frappe.core.doctype.data_import.importer import Importer, ImportFile
 from frappe.utils import logger
+
+from batch_payments.batch_payments.doctype.aba_file_formatter.aba_file_formatter import ABAFileFormatter
 
 class BatchPayments(Document):
 
-        
-
     def __init__(self, *args, **kwargs):
         super(BatchPayments, self).__init__(*args, **kwargs)
+        
 
-
-    def create_payments_for(self, supplier, supplier_inv_list, ref):
+    def create_payments_sub(self, supplier, supplier_inv_list, ref):
         # create header
         # populate payment type
         # posting date
@@ -73,6 +77,14 @@ class BatchPayments(Document):
         pe.validate()
         pe.save()
         pe.submit()
+        self.append(
+            "references",
+            {
+                "reference_doctype" : "Payment Entry",
+                "reference_name" : pe.name,
+                "paid_amount" : pe.paid_amount
+            }
+        )
         return
         
 
@@ -93,11 +105,41 @@ class BatchPayments(Document):
         for supplier, rows in groupby(items_by_supplier, lambda d: d.supplier):
             supplier_inv_list = [d for d in items_by_supplier if d.supplier in supplier]
             ref += 1
-            self.create_payments_for(supplier, supplier_inv_list, ref)
+            self.create_payments_sub(supplier, supplier_inv_list, ref)
+
+        self.save()
+
+    @frappe.whitelist()
+    def generate_file(self=None):
+        self.generate_file_sub()
+        return
+        
+    def generate_file_sub(self):
+        folder = frappe.get_doc(
+            {
+            "doctype": "File",
+            "folder": "Home",
+            "is_folder": 1,
+            "is_private": 0,
+            "file_name": _("Bank Files"),
+            }
+        ).insert(ignore_if_duplicate=True)
+
+        f = frappe.get_doc(
+            {
+            "doctype": "File",
+            "folder": "Home/Bank Files",
+            "is_folder": 0,
+            "is_private": 1,
+            "file_name": (self.name + "." + self.file_format)
+            }
+        )
+        f.content = ABAFileFormatter(self).generate_content()
+        f.insert(ignore_if_duplicate=True)
 
 
 # get bills based on the information passed in the filter, 
-# where does the filter need to live?  On this document?
+# get_mapped_doc is in frappe.model.mapper
 @frappe.whitelist()
 def get_items(source_name, target_doc=None):
     doc = get_mapped_doc(
@@ -114,9 +156,7 @@ def get_items(source_name, target_doc=None):
     return doc
 
 
-@frappe.whitelist()
-def generate_file(self=None):
-    frappe.msgprint('generate_file', 'from batch_payments')
+
 @frappe.whitelist()
 def send_remittances(self=None):
     frappe.msgprint('send_remittances', 'from batch_payments')

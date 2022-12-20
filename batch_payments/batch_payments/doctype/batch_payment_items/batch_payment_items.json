@@ -40,7 +40,7 @@
   {
    "fetch_from": "purchase_invoice.outstanding_amount",
    "fieldname": "outstanding",
-   "fieldtype": "Currency",
+   "fieldtype": "Read Only",
    "label": "Outstanding",
    "read_only": 1
   }
@@ -48,7 +48,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-12-13 17:46:15.122926",
+ "modified": "2022-12-14 22:15:25.454006",
  "modified_by": "Administrator",
  "module": "Batch Payments",
  "name": "Batch Payment Items",
