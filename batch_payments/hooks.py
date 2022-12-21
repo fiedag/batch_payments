@@ -179,3 +179,11 @@ user_data_fields = [
 #	"batch_payments.auth.validate"
 # ]
 
+
+#
+# Fixtures
+#
+fixtures = ["Custom Field"]
+
+
+
