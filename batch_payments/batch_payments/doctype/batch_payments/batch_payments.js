@@ -18,6 +18,7 @@ frappe.ui.form.on('Batch Payments', {
 						docstatus: 1,
 						is_paid: 0,
 						currency: ["=", frm.doc.currency],
+						
 						status: ["!=", "Paid"]
 					}
 				})
