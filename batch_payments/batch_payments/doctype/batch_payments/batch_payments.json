@@ -15,7 +15,8 @@
   "file_format",
   "amended_from",
   "section_break_1",
-  "bank_payment_file",
+  "bank_file",
+  "file_url",
   "section_break_2",
   "items",
   "references"
@@ -91,22 +92,28 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "bank_payment_file",
-   "fieldtype": "HTML",
-   "label": "Bank Payment File"
-  },
-  {
    "fieldname": "section_break_1",
    "fieldtype": "Section Break"
   },
   {
    "fieldname": "section_break_2",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "bank_file",
+   "fieldtype": "Link",
+   "label": "Bank File",
+   "options": "File"
+  },
+  {
+   "fieldname": "file_url",
+   "fieldtype": "Data",
+   "label": "File URL"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-15 17:32:30.753196",
+ "modified": "2022-12-27 15:16:11.538652",
  "modified_by": "Administrator",
  "module": "Batch Payments",
  "name": "Batch Payments",

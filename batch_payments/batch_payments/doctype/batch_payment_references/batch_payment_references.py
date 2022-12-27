@@ -6,11 +6,12 @@ from frappe import _
 
 from frappe.model.document import Document
 
-class BatchPaymentReferences(Document):
-	def on_trash(self):
-		frappe.throw(_("I cannot allow you to do that Dave"))
 
-		#pymt = frappe.get_doc(self.reference_type, self.reference_name)
-		#pymt.cancel()
-		#pymt.delete_doc()
+#
+# Do not bother to create event handlers here e.g. for on_trash 
+# They do not work!  
+# https://discuss.erpnext.com/t/hooks-on-child-table-not-working/37293
+#
+class BatchPaymentReferences(Document):
+	pass
 		
