@@ -32,21 +32,43 @@ frappe.ui.form.on('Batch Payments', {
 						// here we want to populate the payment references child table
 					}
 				})
-			});
+			}, __("Payments"));
+
+
+		frm.add_custom_button(__('Delete Payments'), function() {
+				
+				frappe.confirm(
+					"Do you wish to delete the existing payments?",
+					() => frm.call({
+							doc: frm.doc,
+							method: "delete_payments",
+							callback: function(r) {
+								
+							}
+						}),
+					() => {}
+				)
+
+				
+			}, __("Payments"));
+
 
 		frm.add_custom_button(__('Generate File'), function() {
 				frm.call({
 					doc: frm.doc,
 					method: "generate_file",
 					callback: function(r) {
-
-						var file_html = frm.get_field('bank_payment_file')
-						file_html.set_value(r.message)
-						console.log('bank payment file = ' + r)
-
+						
+						frappe.show_alert("Bank File generated.",5);
 					}
 				})
-			});
+			}, __("Bank File"));
+
+		frm.add_custom_button(__('Download File'), function() {
+
+			window.open(frm.doc.file_url, "_blank");
+			}, __("Bank File"));
+		
 		
 	}
 });

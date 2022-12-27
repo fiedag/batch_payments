@@ -13,6 +13,7 @@ from erpnext.accounts.doctype.payment_entry.payment_entry import get_reference_d
 from frappe.core.doctype.data_import.data_import import DataImport
 from frappe.core.doctype.data_import.importer import Importer, ImportFile
 from frappe.utils import logger
+from frappe.utils.verified_command import get_signed_params
 
 from batch_payments.batch_payments.doctype.aba_file_formatter.aba_file_formatter import ABAFileFormatter
 
@@ -94,27 +95,30 @@ class BatchPayments(Document):
         #purch_invoices_sorted = sorted(self.items, key=lambda d: d['supplier']) 
         supplier_payment = 0
         items_by_supplier = list(sorted(self.items, key=lambda d: (d.supplier)))
-
-        #for r in items_by_supplier:
-            #frappe.msgprint('purch inv: supplier = {} , outstanding {} , invoice = {}, due = {}'.format(r.supplier, r.outstanding, r.purchase_invoice, r.due))
-        frappe.utils.logger.set_log_level("DEBUG")
-        logger = frappe.logger("batch_payments", allow_site=True, file_count=50)
-
         ref = 0
-
         for supplier, rows in groupby(items_by_supplier, lambda d: d.supplier):
             supplier_inv_list = [d for d in items_by_supplier if d.supplier in supplier]
             ref += 1
             self.create_payments_sub(supplier, supplier_inv_list, ref)
+        self.save()
 
+
+    @frappe.whitelist()
+    def delete_payments(self):
+        ref_copy = self.references.copy()
+
+        self.set("references", [])
+        self.save()
+
+        for pyt in ref_copy:
+            payment = frappe.get_doc(pyt.reference_doctype, pyt.reference_name)
+            payment.cancel()
+            frappe.delete_doc(pyt.reference_doctype, pyt.reference_name, ignore_missing=True, force=True)
+            
         self.save()
 
     @frappe.whitelist()
     def generate_file(self=None):
-        self.generate_file_sub()
-        return
-        
-    def generate_file_sub(self):
         folder = frappe.get_doc(
             {
             "doctype": "File",
@@ -125,17 +129,33 @@ class BatchPayments(Document):
             }
         ).insert(ignore_if_duplicate=True)
 
+        # delete the previous file if possible
+        frappe.delete_doc("File", self.bank_file,ignore_missing=True, force=True)
+
+        # e.g. BATCH-2022-12-0006.ABA
+        filename = self.name + "." + self.file_format
+
         f = frappe.get_doc(
             {
             "doctype": "File",
             "folder": "Home/Bank Files",
             "is_folder": 0,
             "is_private": 1,
-            "file_name": (self.name + "." + self.file_format)
+            "file_name": filename
             }
         )
-        f.content = ABAFileFormatter(self).generate_content()
+
+        match(self.file_format): 
+            case "ABA":
+                f.content = ABAFileFormatter(self).generate_content()
+            case _:
+                frappe.msgprint(msg = _("Not yet implemented"), title='Error', raise_exception=FileNotFoundError)
+        
         f.insert(ignore_if_duplicate=True)
+        self.bank_file = f.name
+        self.file_url = f.file_url
+        self.save()
+        return
 
 
 # get bills based on the information passed in the filter, 
