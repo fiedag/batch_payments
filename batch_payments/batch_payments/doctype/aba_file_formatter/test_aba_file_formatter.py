@@ -1,4 +1,4 @@
-# Copyright (c) 2022, Fiedler Consulting and Contributors
+# Copyright (c) 2023, Fiedler Consulting and Contributors
 # See license.txt
 
 # import frappe
