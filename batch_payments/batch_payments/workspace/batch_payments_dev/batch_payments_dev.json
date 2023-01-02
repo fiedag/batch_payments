@@ -1,0 +1,30 @@
+{
+ "charts": [],
+ "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Batch Payments Dev</span>\",\"col\":12}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Purchase Invoice\",\"col\":4}}]",
+ "creation": "2023-01-02 20:02:34.532898",
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "heart",
+ "idx": 0,
+ "label": "Batch Payments Dev",
+ "links": [],
+ "modified": "2023-01-02 20:04:00.613464",
+ "modified_by": "Administrator",
+ "module": "Batch Payments",
+ "name": "Batch Payments Dev",
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Purchase Invoice",
+   "label": "Purchase Invoice"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 1.0,
+ "shortcuts": [],
+ "title": "Batch Payments Dev"
+}
