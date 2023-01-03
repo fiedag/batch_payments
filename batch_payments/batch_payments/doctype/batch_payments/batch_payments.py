@@ -15,7 +15,10 @@ from frappe.core.doctype.data_import.importer import Importer, ImportFile
 from frappe.utils import logger
 from frappe.utils.verified_command import get_signed_params
 
-from batch_payments.batch_payments.doctype.aba_file_formatter.aba_file_formatter import ABAFileFormatter
+from batch_payments.batch_payments.doctype.aba_file_formatter.aba_file_formatter import generate_content
+
+from batch_payments.batch_payments.doctype.remittance_advice.remittance_advice import send_remittance
+
 
 class BatchPayments(Document):
 
@@ -38,6 +41,7 @@ class BatchPayments(Document):
         pe.payment_type = "Pay"
         pe.party_type = "Supplier"
         pe.party = supplier
+        pe.posting_date = self.posting_date
         pe.bank_account = self.get("bank_account")
         # TODO: Replace with lookup of supplier in case they have non-standard AP account for that company
         pe.paid_to = frappe.get_cached_value("Company", "Little Cocoa", "default_payable_account")
@@ -106,7 +110,8 @@ class BatchPayments(Document):
     @frappe.whitelist()
     def delete_payments(self):
         ref_copy = self.references.copy()
-
+        
+        # must remove references to permit deletion
         self.set("references", [])
         self.save()
 
@@ -116,6 +121,7 @@ class BatchPayments(Document):
             frappe.delete_doc(pyt.reference_doctype, pyt.reference_name, ignore_missing=True, force=True)
             
         self.save()
+
 
     @frappe.whitelist()
     def generate_file(self=None):
@@ -147,7 +153,7 @@ class BatchPayments(Document):
 
         match(self.file_format): 
             case "ABA":
-                f.content = ABAFileFormatter(self).generate_content()
+                f.content = generate_content()
             case _:
                 frappe.msgprint(msg = _("Not yet implemented"), title='Error', raise_exception=FileNotFoundError)
         
@@ -156,6 +162,14 @@ class BatchPayments(Document):
         self.file_url = f.file_url
         self.save()
         return
+
+
+    @frappe.whitelist()
+    def send_remittances(self):
+        pdf_file_list = []
+        for pyt in self.references:
+            payment = frappe.get_doc(pyt.reference_doctype, pyt.reference_name)
+            send_remittance(payment, self)
 
 
 # get bills based on the information passed in the filter, 
@@ -175,8 +189,3 @@ def get_items(source_name, target_doc=None):
     )
     return doc
 
-
-
-@frappe.whitelist()
-def send_remittances(self=None):
-    frappe.msgprint('send_remittances', 'from batch_payments')
