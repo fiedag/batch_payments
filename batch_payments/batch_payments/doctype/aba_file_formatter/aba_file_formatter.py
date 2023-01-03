@@ -3,29 +3,32 @@
 
 import frappe
 from frappe.model.document import Document
+from datetime import datetime
+
 
 class ABAFileFormatter(Document):
 	pass
 
 
 @frappe.whitelist()
-def generate_content(self):
-	bank_account = frappe.get_doc("Bank Account", self.batch_payment.bank_account)
+def generate_content(batch_payment):
+	bank_account = frappe.get_doc("Bank Account", batch_payment.bank_account)
+	bank = frappe.get_doc("Bank", bank_account.bank)
 	descriptive_record = "0"
 	descriptive_record += " "*17  # 17 blank characters
 	descriptive_record += " "*2   # reel sequence number
-	descriptive_record += bank_account.account_type.ljust(3)  # 3 characters
+	descriptive_record += bank.financial_institution_abbreviation.ljust(3)  # 3 characters
 	descriptive_record += " "*7
 	descriptive_record += bank_account.company[0:26].ljust(26) # 26 characters left just blank filled
 	descriptive_record += bank_account.apca_payer_number[0:6].ljust(6) # 6 characters left just and blank filled
 	descriptive_record += bank_account.company[0:12].ljust(12) # 12 characters left just blank filled
-	posting_date = datetime.strptime(self.batch_payment.posting_date,"%Y-%m-%d")
+	posting_date = datetime.strptime(batch_payment.posting_date,"%Y-%m-%d")
 	descriptive_record += posting_date.strftime("%d%m%y")
 	descriptive_record += " "*40
 	descriptive_record += "\n"
 	# detail record
 	total_paid = 0
-	for r in self.batch_payment.references:
+	for r in batch_payment.references:
 		descriptive_record += "1"
 		payment = frappe.get_doc("Payment Entry", r.reference_name)
 		supplier = frappe.get_doc("Supplier", payment.party)
@@ -50,7 +53,7 @@ def generate_content(self):
 	descriptive_record += str(round(total_paid * 100))[0:10].rjust(10,"0") # credit total
 	descriptive_record += "0"*10 # debit total
 	descriptive_record += " "*24
-	descriptive_record += str(round(len(self.batch_payment.references))).rjust(6,"0")
+	descriptive_record += str(round(len(batch_payment.references))).rjust(6,"0")
 	descriptive_record += " "*40
 	return descriptive_record
 

@@ -153,7 +153,7 @@ class BatchPayments(Document):
 
         match(self.file_format): 
             case "ABA":
-                f.content = generate_content()
+                f.content = generate_content(self)
             case _:
                 frappe.msgprint(msg = _("Not yet implemented"), title='Error', raise_exception=FileNotFoundError)
         
