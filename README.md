@@ -38,12 +38,12 @@ Generate and send remittance advice emails to parties.
 - A single payment is created for every supplier, containing all the purchase invoices (bills) selected for that supplier.
 - Email remittance advice records using Payments -> Send Remittances
 ![image](https://user-images.githubusercontent.com/4979071/210538381-a3f0534f-2e79-4ba0-8f2a-04ba2bc91711.png)
-- Note that currently no preview of the remittance advice emails is implemented.  You are able to preview the remittance advices by navigating to the Payment Entry and printing the remittance advice print format.
-- 
-- 
-
-
-
+- Note that currently no preview of the remittance advice emails is implemented.  However you are able to preview the remittance advices by navigating to the Payment Entry and printing the remittance advice print format.
+- Generate an ABA file with the Bank File -> Generate File menu option
+![image](https://user-images.githubusercontent.com/4979071/210539124-3418fc40-e596-45b9-a02e-e1e41a863b12.png)
+- Download the resulting file with the Bank File -> Download File menu option
+![image](https://user-images.githubusercontent.com/4979071/210539223-a93e07c6-2e86-4f87-9d7b-3e76a7e17498.png)
+- Having downloaded the bank file you can now log in to the banking portal and upload this file to transact the payments.
 
 #### License
 
