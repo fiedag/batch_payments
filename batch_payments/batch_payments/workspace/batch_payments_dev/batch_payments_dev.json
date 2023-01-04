@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Batch Payments Dev</span>\",\"col\":12}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Purchase Invoice\",\"col\":4}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Batch Payments\",\"col\":4}}]",
+ "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Batch Payments Dev</span>\",\"col\":12}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Purchase Invoice\",\"col\":4}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Batch Payments\",\"col\":4}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Payment Entry\",\"col\":4}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Email Queue\",\"col\":4}}]",
  "creation": "2023-01-02 20:02:34.532898",
  "docstatus": 0,
  "doctype": "Workspace",
@@ -10,8 +10,8 @@
  "idx": 0,
  "label": "Batch Payments Dev",
  "links": [],
- "modified": "2023-01-03 11:44:35.343759",
- "modified_by": "Administrator",
+ "modified": "2023-01-04 13:48:37.126724",
+ "modified_by": "alex@fiedlerconsulting.com.au",
  "module": "Batch Payments",
  "name": "Batch Payments Dev",
  "owner": "Administrator",
@@ -19,8 +19,16 @@
  "public": 1,
  "quick_lists": [
   {
+   "document_type": "Payment Entry",
+   "label": "Payment Entry"
+  },
+  {
    "document_type": "Batch Payments",
    "label": "Batch Payments"
+  },
+  {
+   "document_type": "Email Queue",
+   "label": "Email Queue"
   },
   {
    "document_type": "Purchase Invoice",

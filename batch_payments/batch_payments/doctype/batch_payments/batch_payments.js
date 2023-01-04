@@ -24,6 +24,8 @@ frappe.ui.form.on('Batch Payments', {
 				})
 			}, __("Get Items From"));
 
+
+
 		frm.add_custom_button(__('Create Payments'), function() {
 				frm.call({
 					doc: frm.doc,
@@ -44,6 +46,22 @@ frappe.ui.form.on('Batch Payments', {
 							method: "delete_payments",
 							callback: function(r) {
 								
+							}
+						}),
+					() => {}
+				)
+
+				
+			}, __("Payments"));
+		frm.add_custom_button(__('Send Remittance Advices'), function() {
+				
+				frappe.confirm(
+					"Do you wish to send remittance advices?",
+					() => frm.call({
+							doc: frm.doc,
+							method: "send_remittances",
+							callback: function(r) {
+								frappe.show_alert("Remittances sent.",5);
 							}
 						}),
 					() => {}

@@ -7,16 +7,16 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from itertools import groupby
-from erpnext.accounts.doctype.bank_account.bank_account import get_bank_account_details
-from erpnext.accounts.doctype.payment_entry.payment_entry import get_reference_details
 
 from frappe.core.doctype.data_import.data_import import DataImport
 from frappe.core.doctype.data_import.importer import Importer, ImportFile
 from frappe.utils import logger
 from frappe.utils.verified_command import get_signed_params
 
-from batch_payments.batch_payments.doctype.aba_file_formatter.aba_file_formatter import generate_content
+from erpnext.accounts.doctype.bank_account.bank_account import get_bank_account_details
+from erpnext.accounts.doctype.payment_entry.payment_entry import get_reference_details
 
+from batch_payments.batch_payments.doctype.aba_file_formatter.aba_file_formatter import generate_content
 from batch_payments.batch_payments.doctype.remittance_advice.remittance_advice import send_remittance
 
 
@@ -166,6 +166,7 @@ class BatchPayments(Document):
 
     @frappe.whitelist()
     def send_remittances(self):
+
         pdf_file_list = []
         for pyt in self.references:
             payment = frappe.get_doc(pyt.reference_doctype, pyt.reference_name)
