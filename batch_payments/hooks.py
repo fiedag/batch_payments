@@ -183,7 +183,11 @@ user_data_fields = [
 #
 # Fixtures
 #
-fixtures = ["Custom Field"]
+fixtures = [
+"Custom Field",
+{"dt": "Email Template", "filters": {"name": "Remittance Advice"}},
+{"dt": "Print Format", "filters": {"name": "Remittance Advice"}},
+]
 
 
 
