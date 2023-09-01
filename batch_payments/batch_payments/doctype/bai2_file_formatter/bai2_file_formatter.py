@@ -1,6 +1,7 @@
 # Copyright (c) 2023, Fiedler Consulting and contributors
 # For license information, please see license.txt
-
+# author: Alex Fiedler
+# Date: 01-SEP-2023
 # import frappe
 from frappe.model.document import Document
 
